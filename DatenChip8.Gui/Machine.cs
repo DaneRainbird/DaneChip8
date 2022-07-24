@@ -46,7 +46,9 @@ namespace DatenChip8.Gui {
             try {
                 cpu.run();
             } catch (Exception e) {
+                MessageBox.Show(e.Message, "An Error Occurred", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 System.Diagnostics.Debug.WriteLine(e.Message);
+                Application.Exit();
             }
         }
 
