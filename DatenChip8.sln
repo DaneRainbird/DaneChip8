@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatenChip8", "DatenChip8.csproj", "{9699F1B7-AA24-487D-8206-77F8AA1DBC01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9699F1B7-AA24-487D-8206-77F8AA1DBC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9699F1B7-AA24-487D-8206-77F8AA1DBC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9699F1B7-AA24-487D-8206-77F8AA1DBC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9699F1B7-AA24-487D-8206-77F8AA1DBC01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6F1FB82-15E6-421E-B3EE-EBDA3565814A}
+	EndGlobalSection
+EndGlobal

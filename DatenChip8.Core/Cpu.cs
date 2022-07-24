@@ -9,6 +9,7 @@ namespace DatenChip8.Core {
         // Constants
         public const int MEMORY_SIZE = 4096;
         public const int PROGRAM_START_ADDR = 0x200;
+        public const int TICK_SPEED = 1;
 
         // Memory of the CPU (defaults to 4096 bytes)
         private byte[] memory = new byte[MEMORY_SIZE];
@@ -27,7 +28,10 @@ namespace DatenChip8.Core {
         private ushort SP = 0;
 
         // Paused flag
-        Boolean paused = false;
+        private Boolean paused = false;
+
+        // Stopped flag
+        private Boolean stopped = false;
 
         // Delay timer
         private byte DT = 0;
@@ -41,27 +45,28 @@ namespace DatenChip8.Core {
         // Debug flag 
         Boolean debug = false;
 
+        // Timer stopwatch
+        Stopwatch sw = new Stopwatch();
+
         /// <summary>
         /// CPU Constructor.
         /// </summary>
+        /// <param name="display">The display that this CPU is attached to.</param>
+        /// <param name="debug">Whether or not to enable debug mode.</param>
         public cpu(Display display, bool debug = false) {
             this.display = display;
             this.debug = debug;
-
-            // Clear the console screen when first running the program
-            Console.Clear();
-            Console.WriteLine("CPU Constructor run. Stub for now.");
         }
 
         /// <summary>
         /// The "heart" of the CPU. Handles fetch-decode-execute cycle.
         /// </summary>
         public void run() {
-			Stopwatch sw = new Stopwatch();
-		    long cpuspeed = 6 * Stopwatch.Frequency / 1000;
-            while (!paused) {
-                if (!sw.IsRunning || sw.ElapsedTicks > cpuspeed) {
-                    for (int i = 0; i < 100; i++) {
+		    long cpuSpeed = 6 * Stopwatch.Frequency / 1000;
+            // If the CPU is not stopped, then infinitely loop
+            while (!stopped) {
+                if (!sw.IsRunning || sw.ElapsedTicks > cpuSpeed) {
+                    for (int i = 0; i < TICK_SPEED; i++) {
                         tick();
                     }
 
@@ -83,6 +88,7 @@ namespace DatenChip8.Core {
         /// <summary>
         /// Loads a ROM into the CPU at position 0x200 onwards
         /// </summary>
+        /// <param name="rom">The ROM to load</param>
         public void loadRom(byte[] rom) {
             // Load ROM into memory starting from 0x200
             for (int i = 0; i < rom.Length; i++) {
@@ -120,6 +126,7 @@ namespace DatenChip8.Core {
         /// <summary>
         /// Decodes and executes the current instruction based on it's opcode.
         /// </summary>
+        /// <param name="opcode">The opcode of the instruction to execute</param>
         public void executeInstruction(ushort opcode) {
             // Increment the program counter 
             PC += 2;
@@ -329,6 +336,27 @@ namespace DatenChip8.Core {
                 // Execute the instruction
                 executeInstruction(opcode);
             }
+        }
+
+        /// <summary>
+        /// Pauses the CPU.
+        /// </summary>
+        public void pauseCPU() {
+            this.paused = true;
+        }
+
+        /// <summary>
+        /// Resumes the CPU.
+        /// </summary>
+        public void resumeCPU() {
+            this.paused = false;
+        }
+
+        /// <summary>
+        /// Stops the CPU and kills the thread.
+        /// </summary>
+        public void stopCPU() {
+            this.stopped = true;
         }
     }
 }
