@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using DatenChip8.Gui;
 
 namespace DatenChip8.Core {
     /// <summary>
@@ -42,6 +43,9 @@ namespace DatenChip8.Core {
         // Display
         private Display display;
 
+        // Machine
+        private Machine machine;
+
         // Debug flag 
         Boolean debug = false;
 
@@ -53,9 +57,28 @@ namespace DatenChip8.Core {
         /// </summary>
         /// <param name="display">The display that this CPU is attached to.</param>
         /// <param name="debug">Whether or not to enable debug mode.</param>
-        public cpu(Display display, bool debug = false) {
+        public cpu(Display display, Boolean debug, Machine machine) {
             this.display = display;
             this.debug = debug;
+            this.machine = machine;
+        }
+
+        /// <summary>
+        /// Generates a string containing the current CPU info.
+        /// </summary>
+        /// <returns>String containing information regarding the CPU's current state.</returns>
+        private string toString() {
+            string retVal = "";
+            retVal += "PC: " + PC.ToString("X4") + "\n";
+            retVal += "I: " + I.ToString("X4") + "\n";
+            retVal += "SP: " + SP.ToString("X4") + "\n";
+            retVal += "DT: " + DT.ToString("X2") + "\n";
+            retVal += "ST: " + ST.ToString("X2") + "\n";
+            retVal += "---------------------" + "\n";
+            for (int i = 0; i < V.Length; i++) {
+                retVal += "V[" + i + "]: " + V[i].ToString("X2") + "\n";
+            }
+            return retVal;
         }
 
         /// <summary>
@@ -70,13 +93,13 @@ namespace DatenChip8.Core {
                         tick();
                     }
 
-                    // Update timers
+                    // Update timers and GUI
                     if (!paused) {
-                        if (DT > 0) {
-                            DT--;
-                        } else if (ST > 0) {
-                            ST--;
-                        }
+                        this.updateTimers();
+                        // Invoke the display update on the GUI thread
+                        this.machine.Invoke((MethodInvoker)delegate {
+                            machine.updateRegisterForm(this.toString());
+                        });
                     }
 
                     sw.Restart();
@@ -109,6 +132,10 @@ namespace DatenChip8.Core {
             SP = 0;
             DT = 0;
             ST = 0;
+
+            // Paused and stopped flags should be removed
+            paused = false;
+            stopped = false;
         }
 
         /// <summary>
@@ -353,10 +380,20 @@ namespace DatenChip8.Core {
         }
 
         /// <summary>
-        /// Stops the CPU and kills the thread.
+        /// Stops the CPU, effectively killing the program.
         /// </summary>
-        public void stopCPU() {
+        private void stopCPU() {
             this.stopped = true;
+        }
+
+        /// <summary>
+        /// Clears the display and restarts the CPU.
+        /// </summary>
+        public void restartCPU() {
+            this.pauseCPU();
+            this.display.clearDisplayBuffer();
+            this.initCpu();
+            //this.run();
         }
     }
 }

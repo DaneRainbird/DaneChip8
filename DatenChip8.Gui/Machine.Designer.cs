@@ -25,6 +25,8 @@
         private void InitializeComponent() {
             this.picBoxGameDisplay = new System.Windows.Forms.PictureBox();
             this.btnPausePlay = new System.Windows.Forms.Button();
+            this.btnShowCpuInfoForm = new System.Windows.Forms.Button();
+            this.btnRestart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxGameDisplay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,7 +42,7 @@
             // 
             // btnPausePlay
             // 
-            this.btnPausePlay.Location = new System.Drawing.Point(12, 338);
+            this.btnPausePlay.Location = new System.Drawing.Point(93, 338);
             this.btnPausePlay.Name = "btnPausePlay";
             this.btnPausePlay.Size = new System.Drawing.Size(75, 23);
             this.btnPausePlay.TabIndex = 1;
@@ -48,12 +50,34 @@
             this.btnPausePlay.UseVisualStyleBackColor = true;
             this.btnPausePlay.Click += new System.EventHandler(this.btnPausePlay_Click);
             // 
+            // btnShowCpuInfoForm
+            // 
+            this.btnShowCpuInfoForm.Location = new System.Drawing.Point(174, 338);
+            this.btnShowCpuInfoForm.Name = "btnShowCpuInfoForm";
+            this.btnShowCpuInfoForm.Size = new System.Drawing.Size(110, 23);
+            this.btnShowCpuInfoForm.TabIndex = 2;
+            this.btnShowCpuInfoForm.Text = "Show CPU Info";
+            this.btnShowCpuInfoForm.UseVisualStyleBackColor = true;
+            this.btnShowCpuInfoForm.Click += new System.EventHandler(this.btnShowCpuInfoForm_Click);
+            // 
+            // btnRestart
+            // 
+            this.btnRestart.Location = new System.Drawing.Point(12, 338);
+            this.btnRestart.Name = "btnRestart";
+            this.btnRestart.Size = new System.Drawing.Size(75, 23);
+            this.btnRestart.TabIndex = 3;
+            this.btnRestart.Text = "Restart";
+            this.btnRestart.UseVisualStyleBackColor = true;
+            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
+            // 
             // Machine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(664, 371);
+            this.Controls.Add(this.btnRestart);
+            this.Controls.Add(this.btnShowCpuInfoForm);
             this.Controls.Add(this.btnPausePlay);
             this.Controls.Add(this.picBoxGameDisplay);
             this.Name = "Machine";
@@ -68,5 +92,7 @@
 
         public PictureBox picBoxGameDisplay;
         private Button btnPausePlay;
+        private Button btnShowCpuInfoForm;
+        private Button btnRestart;
     }
 }
