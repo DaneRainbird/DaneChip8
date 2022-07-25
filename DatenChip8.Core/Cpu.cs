@@ -76,8 +76,12 @@ namespace DatenChip8.Core {
             retVal += "ST: " + ST.ToString("X2") + "\n";
             retVal += "---------------------" + "\n";
             for (int i = 0; i < V.Length; i++) {
-                retVal += "V[" + i + "]: " + V[i].ToString("X2") + "\n";
+                retVal += "V[" + i + "]: " + V[i].ToString("X2");
+                if (i < V.Length - 1) {
+                    retVal += "\n";
+                }                
             }
+
             return retVal;
         }
 
@@ -166,7 +170,7 @@ namespace DatenChip8.Core {
             ushort instruction = (ushort)(opcode & 0xF000);
 
             if (this.debug) {
-                Console.WriteLine("Opcode: " + opcode.ToString("X") + "; x: " + x.ToString("X") + " y: " + y.ToString("X") + "; Instruction: 0x" + (instruction >> 12).ToString("X"));
+                Console.WriteLine("PC " +  PC + "; Opcode: " + opcode.ToString("X") + "; x: " + x.ToString("X") + " y: " + y.ToString("X"));
             }
 
             // Switch on the instruction (https://en.wikipedia.org/wiki/CHIP-8#Opcode_table)
@@ -369,6 +373,9 @@ namespace DatenChip8.Core {
         /// Pauses the CPU.
         /// </summary>
         public void pauseCPU() {
+            if (this.debug) {
+                Console.WriteLine("CPU paused at PC: " + PC.ToString("X"));
+            }
             this.paused = true;
         }
 
@@ -376,6 +383,9 @@ namespace DatenChip8.Core {
         /// Resumes the CPU.
         /// </summary>
         public void resumeCPU() {
+            if (this.debug) {
+                Console.WriteLine("CPU resumed at PC: " + PC.ToString("X"));
+            }
             this.paused = false;
         }
 
@@ -383,6 +393,9 @@ namespace DatenChip8.Core {
         /// Stops the CPU, effectively killing the program.
         /// </summary>
         private void stopCPU() {
+            if (this.debug) {
+                Console.WriteLine("CPU stopped at PC: " + PC.ToString("X"));
+            }
             this.stopped = true;
         }
 
@@ -390,10 +403,12 @@ namespace DatenChip8.Core {
         /// Clears the display and restarts the CPU.
         /// </summary>
         public void restartCPU() {
+            if (this.debug) {
+                Console.WriteLine("CPU restarting");
+            }
             this.pauseCPU();
             this.display.clearDisplayBuffer();
             this.initCpu();
-            //this.run();
         }
     }
 }
