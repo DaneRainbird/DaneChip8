@@ -1,5 +1,7 @@
 namespace DatenChip8.Core {
     public class font {
+        // Font sprite data
+        // Credit: http://devernay.free.fr/hacks/chip8/C8TECH10.HTM#font
         private byte[] fontMap = new byte[80] {
                 0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
                 0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -19,6 +21,10 @@ namespace DatenChip8.Core {
                 0xF0, 0x80, 0xF0, 0x80, 0x80  // F
             };
 
+        /// <summary>
+        /// Returns the font sprite data.
+        /// </summary>
+        /// <returns>Byte array containing the sprite font data.</returns>
         public byte[] getFontMap() {
             return fontMap;
         }
