@@ -176,6 +176,10 @@ namespace DatenChip8.Core {
             // Get the instruction from the opcode (i.e. mask with 0xF000)
             ushort instruction = (ushort)(opcode & 0xF000);
 
+            bool tempBool = false;
+            int tempSum = 0;
+            byte tempByte = 0;
+
             if (this.debug) {
                 Console.WriteLine("PC " +  PC + "; Opcode: " + opcode.ToString("X") + "; x: " + x.ToString("X") + " y: " + y.ToString("X"));
             }
@@ -228,48 +232,56 @@ namespace DatenChip8.Core {
                         case 0x1: // Sets VX to VX or VY. (Bitwise OR operation)
                             V[x] |= V[y];
                             break;
-                        case 0x2: // Sets VX to VX and VY. (Bitwise AND operation); 
+                        case 0x2: // Sets VX to VX and VY. (Bitwise AND operation)
                             V[x] &= V[y];
                             break;
                         case 0x3: // Sets VX to VX xor VY. (Bitwise XOR operation)
                             V[x] ^= V[y];
                             break;
                         case 0x4: // Adds VY to VX. VF is set to 1 when there's a carry, and to 0 when there is not. 
-                            V[0xF] = 0;
-                            if (V[x] + V[y] > 255) {
+                            tempSum = V[x] + V[y];
+                            V[x] += V[y];
+
+                            if (tempSum > 255) {
                                 V[0xF] = 1;
                             } else {
                                 V[0xF] = 0;
                             }
-                            V[x] += V[y];
                             break;
                         case 0x5: // VY is subtracted from VX. VF is set to 0 when there's a borrow, and 1 when there is not. 
-                            V[0xF] = 0;
-                            if (V[x] > V[y]) {
+                            tempBool = V[x] > V[y]; 
+                            V[x] -= V[y];
+
+                            if (tempBool) {
                                 V[0xF] = 1;
                             } 
                             else {
                                 V[0xF] = 0;
                             }
-                            V[x] -= V[y];
+
                             break;
                         case 0x6: // Stores the least significant bit of VX in VF and then shifts VX to the right by 1. VF is set to the value of the least significant bit of VX before the shift.
-                            V[0xF] = (byte)(V[x] & 0x1);
+                            tempByte = (byte)(V[x] & 0x1);
                             V[x] >>= 1;
+
+                            V[0xF] = tempByte;
                             break;  
                         case 0x7: // Sets VX to VY minus VX. VF is set to 0 when there's a borrow, and 1 when there is not. 
-                            V[0xF] = 0;
-                            if (V[y] > V[x]) {
+                            tempBool = V[y] > V[x]; 
+                            V[x] = (byte)(V[y] - V[x]);
+
+                            if (tempBool) {
                                 V[0xF] = 1;
                             } 
                             else {
                                 V[0xF] = 0;
                             }
-                            V[x] = (byte)(V[y] - V[x]);
                             break;
                         case 0xE: // Stores the most significant bit of VX in VF and then shifts VX to the left by 1.
-                            V[0xF] = (byte)(V[x] & 0x80);
+                            tempByte = (byte)(V[x] >> 7);
                             V[x] <<= 1;
+
+                            V[0xF] = tempByte;
                             break;
                     }
                     break;
