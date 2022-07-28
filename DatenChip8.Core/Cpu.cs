@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Media;
 using DatenChip8.Gui;
 
 namespace DatenChip8.Core {
@@ -10,7 +11,7 @@ namespace DatenChip8.Core {
         // Constants
         public const int MEMORY_SIZE = 4096;
         public const int PROGRAM_START_ADDR = 0x200;
-        public const int TICK_SPEED = 8;
+        public const int TICK_SPEED = 5;
 
         // Memory of the CPU (defaults to 4096 bytes)
         private byte[] memory = new byte[MEMORY_SIZE];
@@ -50,13 +51,13 @@ namespace DatenChip8.Core {
         private Input keyboard;
 
         // Debug flag 
-        Boolean debug = false;
+        private Boolean debug = false;
 
         // Timer stopwatch
-        Stopwatch sw = new Stopwatch();
+        private Stopwatch sw = new Stopwatch();
 
         // Awaiting Keyboard Input Flag
-        bool awaitingKeyboardInput = false;
+        private bool awaitingKeyboardInput = false;
 
         /// <summary>
         /// CPU Constructor.
@@ -107,6 +108,7 @@ namespace DatenChip8.Core {
                     // Update timers and GUI
                     if (!paused) {
                         this.updateTimers();
+
                         // Invoke the display update on the GUI thread
                         this.machine.Invoke((MethodInvoker)delegate {
                             machine.updateRegisterForm(this.toString());
@@ -341,6 +343,12 @@ namespace DatenChip8.Core {
                                 for (int i = 0; i < 16; i++) {
                                     if (this.keyboard.isKeyPressed(i)) {
                                         V[x] = (byte)i;
+
+                                        // Wait for key to be released before continuing
+                                        while (this.keyboard.isKeyPressed(i)) {
+                                            Thread.Sleep(1);
+                                        }
+
                                         awaitingKeyboardInput = false;
                                         return;
                                     }
@@ -353,7 +361,12 @@ namespace DatenChip8.Core {
                             DT = V[x];
                             break;
                         case 0x18: // Sets the sound timer to VX.
-                            ST = V[x];
+                            /*
+                            * Instead of setting the sound timer, the eaiser option is to play a console beep
+                            * for V[x] milliseconds
+                            * !TODO - Do this better
+                            */
+                            Console.Beep(500, (int)(V[x] * (1000f / 60)));
                             break;
                         case 0x1E: // Adds VX to I. VF is not affected. 
                             I += V[x];
