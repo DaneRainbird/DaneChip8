@@ -9,8 +9,8 @@ namespace DatenChip8.Gui {
         private Display display;
         private RegistersForm registersForm;
         private Input keyboard;
-
-        Thread cpuThread;
+        private byte[] initialRom;
+        private Thread cpuThread;
 
         /// <summary>
         /// Constructor
@@ -22,9 +22,15 @@ namespace DatenChip8.Gui {
             this.display = new Display(4, 32, 64, this);
             this.keyboard = new Input();
             this.cpu = new cpu(display, keyboard, true, this);
+            
+            // Load initial ROM data from resources
+            this.initialRom = Properties.Resources.ch8pic;
 
             // Load the register form
             this.registersForm = new RegistersForm(this.cpu);
+
+            // Create the CPU Thread 
+            this.cpuThread = new Thread(new ThreadStart(createCPUThread));
         }
 
         /// <summary>
@@ -33,7 +39,6 @@ namespace DatenChip8.Gui {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Machine_Load(object sender, EventArgs e) {
-            this.cpuThread = new Thread(new ThreadStart(createCPUThread));
             this.cpuThread.IsBackground = true;
             this.cpuThread.Start();
         }
@@ -44,10 +49,8 @@ namespace DatenChip8.Gui {
         private void createCPUThread() {
             Thread.CurrentThread.Name = "CPU Thread";
             
-            // Read ROM file from roms/test_opcode.ch8 to start with 
-            // !TODO - Potentially write my own splash ROM?
-            byte[] rom = System.IO.File.ReadAllBytes("roms/test_opcode.ch8");
-            cpu.loadRom(rom);
+            // Load the initial ROM (Chip8 logo) into the CPU
+            cpu.loadRom(this.initialRom);
             cpu.initCpu();
             try {
                 cpu.run();

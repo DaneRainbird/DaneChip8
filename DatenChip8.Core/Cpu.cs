@@ -69,6 +69,9 @@ namespace DatenChip8.Core {
             this.keyboard = keyboard;
             this.debug = debug;
             this.machine = machine;
+
+            // Load the font into the memory when constructing the CPU as it only needs to be done once
+            loadFont();
         }
 
         /// <summary>

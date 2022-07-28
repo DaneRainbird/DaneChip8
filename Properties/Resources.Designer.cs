@@ -59,5 +59,15 @@ namespace DatenChip8.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] ch8pic {
+            get {
+                object obj = ResourceManager.GetObject("ch8pic", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
