@@ -35,6 +35,9 @@ namespace DatenChip8.Gui {
                 }).Start();
         }
 
+        /// <summary>
+        /// Creates the worker thread that runs the CPU of the Chip8 Emulator
+        /// </summary>
         private void createCPUThread() {
             Thread.CurrentThread.Name = "CPU Thread";
 
@@ -88,14 +91,40 @@ namespace DatenChip8.Gui {
         }
 
         /// <summary>
-        /// Handles restarting the CPU.
+        /// Handles the restart button click event and restarts the CPU
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void btnRestart_Click(object sender, EventArgs e) {
+            handleCPURestart();
+        }
+
+        /// <summary>
+        /// Restarts the CPU and updates the UI to match the current "playing" state
+        /// </summary>
+        private void handleCPURestart() {
             this.btnPausePlay.Text = "Pause";
             this.Text = this.Text.Replace(" (Paused)", "");
             this.cpu.restartCPU();
+        }
+
+        private void selectROMToolStripMenuItem_Click(object sender, EventArgs e) {
+            // Pause the CPU while the file picker opens
+            this.cpu.pauseCPU();
+
+            // Create a new file dialog
+            OpenFileDialog ofd = new OpenFileDialog() {
+                FileName = "Select a CHIP8 ROM",
+                Title = "Open CHIP8 ROM"
+            };
+            // If the file dialog has selected a file, then try load that file, otherwise resume operation
+            if (ofd.ShowDialog() == DialogResult.OK) {
+                string filePath = ofd.FileName;
+                this.cpu.loadRom(System.IO.File.ReadAllBytes(filePath));
+                handleCPURestart();
+            } else {
+                this.cpu.resumeCPU();
+            }
         }
     }
 }
