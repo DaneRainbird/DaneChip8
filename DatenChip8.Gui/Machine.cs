@@ -8,6 +8,9 @@ namespace DatenChip8.Gui {
         private cpu cpu;
         private Display display;
         private RegistersForm registersForm;
+        private Input keyboard;
+
+        Thread cpuThread;
 
         /// <summary>
         /// Constructor
@@ -17,7 +20,8 @@ namespace DatenChip8.Gui {
 
             // Initialize components and pass to new CPU
             this.display = new Display(4, 32, 64, this);
-            this.cpu = new cpu(display, true, this);
+            this.keyboard = new Input();
+            this.cpu = new cpu(display, keyboard, true, this);
 
             // Load the register form
             this.registersForm = new RegistersForm(this.cpu);
@@ -29,10 +33,9 @@ namespace DatenChip8.Gui {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Machine_Load(object sender, EventArgs e) {
-            new Thread(() => 
-                {
-                    createCPUThread();
-                }).Start();
+            this.cpuThread = new Thread(new ThreadStart(createCPUThread));
+            this.cpuThread.IsBackground = true;
+            this.cpuThread.Start();
         }
 
         /// <summary>
@@ -40,9 +43,9 @@ namespace DatenChip8.Gui {
         /// </summary>
         private void createCPUThread() {
             Thread.CurrentThread.Name = "CPU Thread";
-
-            // Read ROM file from roms/test_opcode.ch8
-            // !TODO - create an option to select a ROM file to load
+            
+            // Read ROM file from roms/test_opcode.ch8 to start with 
+            // !TODO - Potentially write my own splash ROM?
             byte[] rom = System.IO.File.ReadAllBytes("roms/test_opcode.ch8");
             cpu.loadRom(rom);
             cpu.initCpu();
@@ -108,6 +111,11 @@ namespace DatenChip8.Gui {
             this.cpu.restartCPU();
         }
 
+        /// <summary>
+        /// Handles the "Select ROM" option in the menu bar
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void selectROMToolStripMenuItem_Click(object sender, EventArgs e) {
             // Pause the CPU while the file picker opens
             this.cpu.pauseCPU();
@@ -125,6 +133,37 @@ namespace DatenChip8.Gui {
             } else {
                 this.cpu.resumeCPU();
             }
+        }
+
+        /// <summary>
+        /// Handles KeyDown events on the form and passes to the Input module
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Machine_KeyDown(object sender, KeyEventArgs e) {
+            this.keyboard.setKeyPressed(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Handles KeyUp events on the form and passes to the Input module
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Machine_KeyUp(object sender, KeyEventArgs e) {
+            this.keyboard.setKeyReleased(e.KeyCode);
+        }
+
+        /// <summary>
+        /// Handles closing the form and gracefully exiting the CPU thread
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Machine_FormClosing(object sender, FormClosingEventArgs e) {
+            // Pause the CPU to prevent error messages popping up
+            this.cpu.pauseCPU();
+
+            // Exit the application and gracefully close the CPU thread
+            Environment.Exit(Environment.ExitCode);
         }
     }
 }

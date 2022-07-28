@@ -95,7 +95,7 @@
             // selectROMToolStripMenuItem
             // 
             this.selectROMToolStripMenuItem.Name = "selectROMToolStripMenuItem";
-            this.selectROMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectROMToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.selectROMToolStripMenuItem.Text = "Select ROM";
             this.selectROMToolStripMenuItem.Click += new System.EventHandler(this.selectROMToolStripMenuItem_Click);
             // 
@@ -110,10 +110,14 @@
             this.Controls.Add(this.btnPausePlay);
             this.Controls.Add(this.picBoxGameDisplay);
             this.Controls.Add(this.menuStrip);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "Machine";
             this.Text = "DatenChip8";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Machine_FormClosing);
             this.Load += new System.EventHandler(this.Machine_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Machine_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Machine_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.picBoxGameDisplay)).EndInit();
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

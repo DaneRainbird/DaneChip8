@@ -10,7 +10,7 @@ namespace DatenChip8.Core {
         // Constants
         public const int MEMORY_SIZE = 4096;
         public const int PROGRAM_START_ADDR = 0x200;
-        public const int TICK_SPEED = 1;
+        public const int TICK_SPEED = 8;
 
         // Memory of the CPU (defaults to 4096 bytes)
         private byte[] memory = new byte[MEMORY_SIZE];
@@ -46,19 +46,26 @@ namespace DatenChip8.Core {
         // Machine
         private Machine machine;
 
+        // Keyboard
+        private Input keyboard;
+
         // Debug flag 
         Boolean debug = false;
 
         // Timer stopwatch
         Stopwatch sw = new Stopwatch();
 
+        // Awaiting Keyboard Input Flag
+        bool awaitingKeyboardInput = false;
+
         /// <summary>
         /// CPU Constructor.
         /// </summary>
         /// <param name="display">The display that this CPU is attached to.</param>
         /// <param name="debug">Whether or not to enable debug mode.</param>
-        public cpu(Display display, Boolean debug, Machine machine) {
+        public cpu(Display display, Input keyboard, Boolean debug, Machine machine) {
             this.display = display;
+            this.keyboard = keyboard;
             this.debug = debug;
             this.machine = machine;
         }
@@ -298,15 +305,37 @@ namespace DatenChip8.Core {
                     }
 
                     break;
-                case 0xE000: // not implemented 
-                    throw new NotImplementedException("Unimplemented instruction: E000 instruction.");
+                case 0xE000: // Switch on the last nibble of the opcode.
+                    switch (opcode & 0xFF) {
+                        case 0x9E: // Skips the next instruction if the key stored in VX is pressed.
+                            if (keyboard.isKeyPressed(V[x])) {
+                                PC += 2;
+                            }
+                            break;
+                        case 0xA1: // Skips the next instruction if the key stored in VX is not pressed. 
+                            if (!keyboard.isKeyPressed(V[x])) {
+                                PC += 2;
+                            }
+                            break;
+                    }
+                    break;
                 case 0xF000: // Switch on the last nibble of the opcode.
                     switch (opcode & 0xFF) {
                         case 0x07: // Sets VX to the value of the delay timer. 
                             V[x] = DT;
                             break;
                         case 0x0A: // A key press is awaited, and then stored in VX. (Blocking Operation. All instruction halted until next key event); 
-                            throw new NotImplementedException("Unimplemented instruction: 0xFX0A instruction.");
+                            if (this.awaitingKeyboardInput) {
+                                for (int i = 0; i < 16; i++) {
+                                    if (this.keyboard.isKeyPressed(i)) {
+                                        V[x] = (byte)i;
+                                        awaitingKeyboardInput = false;
+                                        return;
+                                    }
+                                }
+                            }
+                            awaitingKeyboardInput = true;
+                            PC -= 2; // Infinitely loop on this instruction until keyboad input 
                             break;
                         case 0x15: // Sets the delay timer to VX. 
                             DT = V[x];
