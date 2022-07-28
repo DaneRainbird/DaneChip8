@@ -83,9 +83,9 @@ namespace DatenChip8.Core {
             for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {
                     if (this.displayBuffer[x + (y * WIDTH)] == 1) {
-                        initalBitmap.SetPixel(x, y, Color.White);
+                        initalBitmap.SetPixel(x, y, this.machine.getDisplayColours()[1]);
                     } else {
-                        initalBitmap.SetPixel(x, y, Color.Black);
+                        initalBitmap.SetPixel(x, y, this.machine.getDisplayColours()[0]);
                     }
                 }
             }

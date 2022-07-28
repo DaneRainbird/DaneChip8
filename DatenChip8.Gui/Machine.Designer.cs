@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Machine));
             this.picBoxGameDisplay = new System.Windows.Forms.PictureBox();
             this.btnPausePlay = new System.Windows.Forms.Button();
             this.btnShowCpuInfoForm = new System.Windows.Forms.Button();
@@ -30,6 +31,14 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emulatorColoursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.whiteBlackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.greenBlackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.purpleBlackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.blackWhiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxGameDisplay)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
@@ -77,7 +86,8 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.uIToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(664, 24);
@@ -87,7 +97,9 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectROMToolStripMenuItem});
+            this.selectROMToolStripMenuItem,
+            this.aboutToolStripMenuItem,
+            this.quitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -95,9 +107,70 @@
             // selectROMToolStripMenuItem
             // 
             this.selectROMToolStripMenuItem.Name = "selectROMToolStripMenuItem";
-            this.selectROMToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.selectROMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.selectROMToolStripMenuItem.Text = "Select ROM";
             this.selectROMToolStripMenuItem.Click += new System.EventHandler(this.selectROMToolStripMenuItem_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // uIToolStripMenuItem
+            // 
+            this.uIToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emulatorColoursToolStripMenuItem});
+            this.uIToolStripMenuItem.Name = "uIToolStripMenuItem";
+            this.uIToolStripMenuItem.Size = new System.Drawing.Size(30, 20);
+            this.uIToolStripMenuItem.Text = "UI";
+            // 
+            // emulatorColoursToolStripMenuItem
+            // 
+            this.emulatorColoursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whiteBlackToolStripMenuItem,
+            this.greenBlackToolStripMenuItem,
+            this.purpleBlackToolStripMenuItem,
+            this.blackWhiteToolStripMenuItem});
+            this.emulatorColoursToolStripMenuItem.Name = "emulatorColoursToolStripMenuItem";
+            this.emulatorColoursToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.emulatorColoursToolStripMenuItem.Text = "Emulator Colours";
+            // 
+            // whiteBlackToolStripMenuItem
+            // 
+            this.whiteBlackToolStripMenuItem.Name = "whiteBlackToolStripMenuItem";
+            this.whiteBlackToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.whiteBlackToolStripMenuItem.Text = "White + Black";
+            this.whiteBlackToolStripMenuItem.Click += new System.EventHandler(this.whiteBlackToolStripMenuItem_Click);
+            // 
+            // greenBlackToolStripMenuItem
+            // 
+            this.greenBlackToolStripMenuItem.Name = "greenBlackToolStripMenuItem";
+            this.greenBlackToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.greenBlackToolStripMenuItem.Text = "Green + Black";
+            this.greenBlackToolStripMenuItem.Click += new System.EventHandler(this.greenBlackToolStripMenuItem_Click);
+            // 
+            // purpleBlackToolStripMenuItem
+            // 
+            this.purpleBlackToolStripMenuItem.Name = "purpleBlackToolStripMenuItem";
+            this.purpleBlackToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.purpleBlackToolStripMenuItem.Text = "Purple + Black";
+            this.purpleBlackToolStripMenuItem.Click += new System.EventHandler(this.purpleBlackToolStripMenuItem_Click);
+            // 
+            // blackWhiteToolStripMenuItem
+            // 
+            this.blackWhiteToolStripMenuItem.Name = "blackWhiteToolStripMenuItem";
+            this.blackWhiteToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.blackWhiteToolStripMenuItem.Text = "Black + White";
+            this.blackWhiteToolStripMenuItem.Click += new System.EventHandler(this.blackWhiteToolStripMenuItem_Click);
             // 
             // Machine
             // 
@@ -110,6 +183,7 @@
             this.Controls.Add(this.btnPausePlay);
             this.Controls.Add(this.picBoxGameDisplay);
             this.Controls.Add(this.menuStrip);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Name = "Machine";
@@ -135,5 +209,13 @@
         private MenuStrip menuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem selectROMToolStripMenuItem;
+        private ToolStripMenuItem uIToolStripMenuItem;
+        private ToolStripMenuItem emulatorColoursToolStripMenuItem;
+        private ToolStripMenuItem whiteBlackToolStripMenuItem;
+        private ToolStripMenuItem greenBlackToolStripMenuItem;
+        private ToolStripMenuItem purpleBlackToolStripMenuItem;
+        private ToolStripMenuItem blackWhiteToolStripMenuItem;
+        private ToolStripMenuItem quitToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

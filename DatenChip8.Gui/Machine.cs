@@ -12,6 +12,10 @@ namespace DatenChip8.Gui {
         private byte[] initialRom;
         private Thread cpuThread;
 
+        // Emulator "screen" colours, defaulting to black and white
+        Color backgroudColour = Color.Black;
+        Color foregroundColor = Color.White;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -167,6 +171,68 @@ namespace DatenChip8.Gui {
 
             // Exit the application and gracefully close the CPU thread
             Environment.Exit(Environment.ExitCode);
+        }
+
+        public Color[] getDisplayColours() {
+            Color[] colours = new Color[2];
+            colours[0] = this.backgroudColour;
+            colours[1] = this.foregroundColor;
+            
+            return colours;
+        }
+
+        /// <summary>
+        /// Handles the menu input to change the emulator "screen" colours to white and black.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void whiteBlackToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.foregroundColor = Color.White;
+            this.backgroudColour = Color.Black;
+        }
+
+        /// <summary>
+        /// Handles the menu input to change the emulator "screen" colours to green and black.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void greenBlackToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.foregroundColor = Color.Green;
+            this.backgroudColour = Color.Black;
+        }
+
+        /// <summary>
+        /// Handles the menu input to change the emulator "screen" colours to purple and black.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void purpleBlackToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.foregroundColor = Color.Purple;
+            this.backgroudColour = Color.Black;
+        }
+
+        /// <summary>
+        /// Handles the menu input to change the emulator "screen" colours to black and white.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void blackWhiteToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.foregroundColor = Color.Black;
+            this.backgroudColour = Color.White;
+        }
+
+        /// <summary>
+        /// Handles the menu input to quit the emulator.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Close();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+            AboutForm aboutForm = new AboutForm();
+            aboutForm.Show();
         }
     }
 }

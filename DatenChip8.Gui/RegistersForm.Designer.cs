@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegistersForm));
             this.btnClose = new System.Windows.Forms.Button();
             this.rchTxtBoxCpuInfo = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
@@ -54,6 +55,7 @@
             this.ControlBox = false;
             this.Controls.Add(this.rchTxtBoxCpuInfo);
             this.Controls.Add(this.btnClose);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RegistersForm";
             this.Text = "CPU Info";
             this.ResumeLayout(false);
