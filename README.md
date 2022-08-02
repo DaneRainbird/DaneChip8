@@ -11,7 +11,7 @@ As I'm interesting in eventually developing an original DMG GameBoy emulator, I 
 ## Features 
 - Full instruction set support
 - Colour display output
-- An (extremely rudimentary) debuger
+- An (extremely rudimentary) debugger
 
 ## Usage
 Simply load up `DatenChip8.exe` and select the ROM you want to use via the `Load ROM` option in the `File` dropdown menu. 
