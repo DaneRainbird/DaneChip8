@@ -2,7 +2,7 @@
 A CHIP-8 "Emulator" (read: interpreter), written entirely in C#.
 
 ## Background 
-[CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) is a programming language from the late 1970s, used to runs games on it's own CHIP-8 virtual machine. It's well-known for it's overall simplicity and ease of development, and as such, [it's still used today](https://johnearnest.github.io/chip8Archive/).
+[CHIP-8](https://en.wikipedia.org/wiki/CHIP-8) is a programming language from the late 1970s, used to run games on it's own virtual machine. It's well-known for it's overall simplicity and ease of development, and as such, [it's still used today](https://johnearnest.github.io/chip8Archive/).
 
 CHIP-8 is also well known as being a gateway into understanding the mechanics and concepts behind emulation, and is often recommended as a starting point when getting into this area of programming. 
 
